@@ -103,7 +103,6 @@ const perfilUsuario = async function (req, res){
     const {usuario} = req;
    
     try {
-        verfificarAutenticacao();
         return res.status(200).json(usuario);
     
     } catch (error) {
@@ -116,8 +115,7 @@ const atualizarPerfil = async function (req, res) {
     const {usuario} = req;
 
     try {
-        verfificarAutenticacao();
-
+        
         if(id) {
             return res.status(400).json("O id não pode ser modificado!")
         }
