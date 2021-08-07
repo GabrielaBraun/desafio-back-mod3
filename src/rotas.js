@@ -5,7 +5,7 @@ const produtos = require('./Controladores/produtos');
 const rotas = express();
 
 rotas.post('/cadastro', usuarios.cadastrarUsuario);
-//rotas.post('login', usuarios);
+rotas.post('/login', usuarios.loginCadastrado);
 //rotas.get('/perfil', usuarios);
 //rotas.put('/perfil', usuarios);
 
