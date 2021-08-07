@@ -1,7 +1,6 @@
 const conexao = require('../conexao');
 const securePassword = require('secure-password');
 const jwt = require('jsonwebtoken');
-const verfificarAutenticacao = require('../autenticacao');
 
 const pwd = securePassword();
 

@@ -13,7 +13,7 @@ rotas.use(verfificarAutenticacao);
 rotas.get('/perfil', usuarios.perfilUsuario);
 rotas.put('/perfil', usuarios.atualizarPerfil);
 
-//rotas.get('/produtos', produtos);
+rotas.get('/produtos', produtos.listarProdutos);
 //rotas.get('/produtos/:id', produtos);
 //rotas.post('/produtos', produtos);
 //rotas.put('/produtos/:id', produtos);
