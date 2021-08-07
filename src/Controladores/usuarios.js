@@ -1,6 +1,7 @@
 const conexao = require('../conexao');
 const securePassword = require('secure-password');
 const jwt = require('jsonwebtoken');
+const verfificarAutenticacao = require('../autenticacao');
 
 const pwd = securePassword();
 
@@ -99,31 +100,12 @@ const loginCadastrado = async function (req, res){
 };
 
 const perfilUsuario = async function (req, res){
-    const {token} = req.body;
-
-    if(!token){
-        return res.status(400).json("o token é obrigatório");
-    }
+    const {usuario} = req;
+   
     try {
-        const {id} = jwt.verify(token, "chaveSecreta123");
-
-        const queryPerfil = 'select * from usuarios where id = $1';
-        const {rows, rowCount} = await conexao.query(queryPerfil, [id]);
-
-        if(rowCount === 0){
-            return res.status(404).json("Usuário não encontrado");
-        }
-
-        const usuario = rows[0];
+        verfificarAutenticacao();
+        return res.status(200).json(usuario);
     
-        return res.status(200).json({
-            id: usuario.id,
-            nome: usuario.nome,
-            email:usuario.email,
-            nome_loja:usuario.nome_loja
-        });
-    
-
     } catch (error) {
         return res.status(400).json(error.message)
     }

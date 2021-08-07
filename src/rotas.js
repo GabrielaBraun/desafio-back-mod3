@@ -1,12 +1,13 @@
 const express = require('express');
 const usuarios = require('./Controladores/usuarios');
 const produtos = require('./Controladores/produtos');
+const verfificarAutenticacao = require('./autenticacao');
 
 const rotas = express();
 
 rotas.post('/cadastro', usuarios.cadastrarUsuario);
 rotas.post('/login', usuarios.loginCadastrado);
-rotas.get('/perfil', usuarios.perfilUsuario);
+rotas.get('/perfil', verfificarAutenticacao, usuarios.perfilUsuario);
 //rotas.put('/perfil', usuarios);
 
 //rotas.get('/produtos', produtos);
