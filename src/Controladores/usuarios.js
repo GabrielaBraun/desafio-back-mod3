@@ -83,10 +83,7 @@ const loginCadastrado = async function (req, res){
             }
 
             const token = jwt.sign({
-                id: usuario.id,
-                nome: usuario.nome,
-                email:usuario.email,
-                nome_loja:usuario.nome_loja
+                id: usuario.id
             }, "chaveSecreta123");
 
             return res.status(200).json({
