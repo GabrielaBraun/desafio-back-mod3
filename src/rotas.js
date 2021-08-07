@@ -6,7 +6,7 @@ const rotas = express();
 
 rotas.post('/cadastro', usuarios.cadastrarUsuario);
 rotas.post('/login', usuarios.loginCadastrado);
-//rotas.get('/perfil', usuarios);
+rotas.get('/perfil', usuarios.perfilUsuario);
 //rotas.put('/perfil', usuarios);
 
 //rotas.get('/produtos', produtos);
