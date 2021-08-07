@@ -19,7 +19,7 @@ create table produtos(
   estoque smallint not null,
   categoria varchar(20),
   preco integer not null,
-  descricao text,
+  descricao text not null,
   imagem text not null
 );
 

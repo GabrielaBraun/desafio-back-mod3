@@ -32,7 +32,36 @@ const obterProduto = async function (req, res) {
             return res.status(404).json("Produto não encontrado!");
         }
 
-        return status(200).json(produtosEncontrados.row);
+        return res.status(200).json(produtosEncontrados.rows);
+
+    } catch (error) {
+        return res.status(400).json(error.message);
+    }
+};
+
+const cadastrarProduto = async function (req, res){
+    const {nome, estoque, preco, descricao} = req.body;
+    const {usuario} = req;
+
+    try {
+
+        if(!nome){
+            return res.status(400).json("O nome do produto é obrigatório!");
+        }
+        if(!estoque){
+            return res.status(400).json("A quantidade em estoque do produto é obrigatória!");
+        }
+        if(!preco){
+            return res.status(400).json("O preço do produto é obrigatório!");
+        }
+        if(!descricao){
+            return res.status(400).json("A descrição do produto é obrigatória!");
+        }
+
+        const queryCadastroProduto = 'insert into produtos (usuario_id, nome, estoque, preco, descricao) values ($1, $2, $3, $4, $5)';
+        const produtoCadastrado = await conexao.query(queryCadastroProduto, [usuario.id, nome, estoque, preco, descricao]);
+
+        return res.status(200).json("Produto cadastrado com sucesso!");
 
     } catch (error) {
         return res.status(400).json(error.message);
@@ -41,5 +70,6 @@ const obterProduto = async function (req, res) {
 
 module.exports ={
     listarProdutos,
-    obterProduto
+    obterProduto,
+    cadastrarProduto
 }
