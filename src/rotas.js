@@ -7,8 +7,11 @@ const rotas = express();
 
 rotas.post('/cadastro', usuarios.cadastrarUsuario);
 rotas.post('/login', usuarios.loginCadastrado);
-rotas.get('/perfil', verfificarAutenticacao, usuarios.perfilUsuario);
-//rotas.put('/perfil', usuarios);
+
+rotas.use(verfificarAutenticacao);
+
+rotas.get('/perfil', usuarios.perfilUsuario);
+rotas.put('/perfil', usuarios.atualizarPerfil);
 
 //rotas.get('/produtos', produtos);
 //rotas.get('/produtos/:id', produtos);

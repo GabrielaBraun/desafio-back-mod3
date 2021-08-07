@@ -111,8 +111,57 @@ const perfilUsuario = async function (req, res){
     }
 };
 
+const atualizarPerfil = async function (req, res) {
+    const {id, nome, email, senha, nome_loja} = req.body;
+    const {usuario} = req;
+
+    try {
+        verfificarAutenticacao();
+
+        if(id) {
+            return res.status(400).json("O id não pode ser modificado!")
+        }
+    
+        if(!nome){
+            return res.status(400).json("O campo nome é obrigatório!")
+        }
+    
+        if(!email){
+            return res.status(400).json("O campo email é obrigatório!")
+        }
+        if(!senha){
+            return res.status(400).json("O campo senha é obrigatório!")
+        }
+    
+        if(!nome_loja){
+            return res.status(400).json("O campo nome da loja é obrigatório!")
+        }
+    
+        const queryEmail = 'select * from usuarios where email = $1';
+        const emailUsuarios = await conexao.query(queryEmail, [email]);
+
+        if(emailUsuarios.rowCount > 0) {
+            return res.status(400).json("Este email já foi cadastrado!");
+        }
+
+        const hash = (await pwd.hash(Buffer.from(senha))).toString("hex");
+        const queryAtualizar = 'update usuarios set nome = $1, email = $2, senha = $3, nome_loja = $4 where id = $5';
+        const perfilAtualizado = await conexao.query(queryAtualizar, [nome, email, hash, nome_loja, usuario.id])
+
+        if(perfilAtualizado.rowCount === 0){
+            return res.status(404).json('Perfil não encontrado');
+        }
+
+        return res.status(200).json("Perfil atualizado com sucesso!")
+
+    } catch (error) {
+        return res.status(400).json(error.message)
+    }
+}
+
 module.exports = {
     cadastrarUsuario,
     loginCadastrado,
-    perfilUsuario
+    perfilUsuario,
+    atualizarPerfil
 };
