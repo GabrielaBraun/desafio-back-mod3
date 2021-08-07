@@ -11,7 +11,7 @@ const listarProdutos = async function (req, res) {
             return res.status(200).status(produtosPorCategoria.rows);
         } 
         
-        const queryProdutos = 'select * from produtos where id = $1';
+        const queryProdutos = 'select * from produtos where usuario_id = $1';
         const produtosEncontrados = await conexao.query(queryProdutos, [usuario.id]);
 
         return res.status(200).json(produtosEncontrados.rows);
@@ -20,6 +20,26 @@ const listarProdutos = async function (req, res) {
     }
 };
 
+const obterProduto = async function (req, res) {
+    const {id} = req.params;
+    const {usuario} = req;
+
+    try {
+        const queryProdutos = 'select * from produtos where id = $1 and usuario_id = $2';
+        const produtosEncontrados = await conexao.query(queryProdutos, [id, usuario.id]);
+
+        if(produtosEncontrados.rowCount === 0) {
+            return res.status(404).json("Produto não encontrado!");
+        }
+
+        return status(200).json(produtosEncontrados.row);
+
+    } catch (error) {
+        return res.status(400).json(error.message);
+    }
+};
+
 module.exports ={
-    listarProdutos
+    listarProdutos,
+    obterProduto
 }
