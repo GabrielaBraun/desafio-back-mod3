@@ -109,9 +109,35 @@ const atualizarProduto = async function (req, res) {
 
 };
 
+const deletarProduto = async function (req, res){
+    const {id} = req.params;
+    const {usuario} = req;
+
+    try {
+        const queryProdutos = 'select * from produtos where id = $1 and usuario_id = $2';
+        const produtosEncontrados = await conexao.query(queryProdutos, [id, usuario.id]);
+
+        if(produtosEncontrados.rowCount === 0) {
+            return res.status(404).json("Produto não encontrado!");
+        }
+
+        const queryDeletar = 'delete from produtos where id = $1 and usuario_id = $2';
+        const produtoDeletado = await conexao.query(queryDeletar, [id, usuario.id]);
+
+        if(produtoDeletado.rowCount === 0){
+            return res.status(400).json("Não foi possível excluir o produto!");
+        }
+
+        return res.status(200).json("Produto deletado com sucesso!");
+    } catch (error) {
+        return res.status(400).json(error.message);
+    }
+};
+
 module.exports ={
     listarProdutos,
     obterProduto,
     cadastrarProduto,
-    atualizarProduto
+    atualizarProduto,
+    deletarProduto
 }
