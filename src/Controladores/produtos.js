@@ -2,13 +2,18 @@ const conexao = require('../conexao');
 
 const listarProdutos = async function (req, res) {
     const {usuario} = req;
-    const {categoria} = req.query;
+    const {categoria, preco} = req.query;
 
     try {
-        const produtosPorCategoria = await conexao.query('select * from produtos where categoria = $1 and usuario_id = $2', [categoria, usuario.id])
+        const produtosPorCategoria = await conexao.query('select * from produtos where categoria = $1 and usuario_id = $2', [categoria, usuario.id]);
+        const produtosPorPreco = await conexao.query('select * from produtos where preco = $1 and usuario_id = $2', [preco, usuario.id]);
 
         if(categoria > 0) {
             return res.status(200).status(produtosPorCategoria.rows);
+        } 
+
+        if(preco > 0) {
+            return res.status(200).status(produtosPorPreco.rows);
         } 
         
         const queryProdutos = 'select * from produtos where usuario_id = $1';
