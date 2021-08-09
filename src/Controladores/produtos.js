@@ -5,21 +5,23 @@ const listarProdutos = async function (req, res) {
     const {categoria, preco} = req.query;
 
     try {
-        const produtosPorCategoria = await conexao.query('select * from produtos where categoria = $1 and usuario_id = $2', [categoria, usuario.id]);
-        const produtosPorPreco = await conexao.query('select * from produtos where preco = $1 and usuario_id = $2', [preco, usuario.id]);
-
-        if(categoria > 0) {
-            return res.status(200).status(produtosPorCategoria.rows);
+        if(categoria) {
+            const {rows: produtosPorCategoria} = await conexao.query('select * from produtos where categoria = $1 and usuario_id = $2', [categoria, usuario.id]);
+            console.log(produtosPorCategoria);
+            return res.status(200).json(produtosPorCategoria);
         } 
 
-        if(preco > 0) {
-            return res.status(200).status(produtosPorPreco.rows);
+        if(preco) {
+            const {rows: produtosPorPreco} = await conexao.query('select * from produtos where preco = $1 and usuario_id = $2', [preco, usuario.id]);
+            return res.status(200).json(produtosPorPreco);
         } 
         
-        const queryProdutos = 'select * from produtos where usuario_id = $1';
-        const produtosEncontrados = await conexao.query(queryProdutos, [usuario.id]);
+        if(!categoria && !preco) {
+            const queryProdutos = 'select * from produtos where usuario_id = $1';
+            const produtosEncontrados = await conexao.query(queryProdutos, [usuario.id]);
 
-        return res.status(200).json(produtosEncontrados.rows);
+            return res.status(200).json(produtosEncontrados.rows);
+        }
     } catch (error) {
         return res.status(400).json(error.message);
     }
