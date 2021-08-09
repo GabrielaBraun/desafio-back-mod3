@@ -133,11 +133,8 @@ const atualizarPerfil = async function (req, res) {
         if(!nome_loja){
             return res.status(400).json("O campo nome da loja é obrigatório!")
         }
-    
-        const queryEmail = 'select * from usuarios where email = $1';
-        const emailUsuarios = await conexao.query(queryEmail, [email]);
 
-        if(emailUsuarios.rowCount > 0) {
+        if(email !== usuario.email) {
             return res.status(400).json("Este email já foi cadastrado!");
         }
 
