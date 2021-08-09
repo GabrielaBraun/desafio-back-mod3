@@ -7,7 +7,6 @@ const listarProdutos = async function (req, res) {
     try {
         if(categoria) {
             const {rows: produtosPorCategoria} = await conexao.query('select * from produtos where categoria = $1 and usuario_id = $2', [categoria, usuario.id]);
-            console.log(produtosPorCategoria);
             return res.status(200).json(produtosPorCategoria);
         } 
 
