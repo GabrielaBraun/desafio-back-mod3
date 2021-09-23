@@ -16,4 +16,4 @@ OBS: Cada usuário só pode ver e manipular seus próprios dados e seus próprio
 
 #### Criar um Banco de Dados PostgreSQL chamado market_cubos
 
-OBS2: A API precisa se conectar com o banco de dados para armazenar as informações
+OBS2: A API é conectada ao banco de dados para armazenar as informações
